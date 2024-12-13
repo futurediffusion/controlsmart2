@@ -22,7 +22,7 @@ type Product = {
 async function getProducts(): Promise<Product[]> {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/products.json`, {
-            next: { revalidate: 3600 }
+            next: { revalidate: 3600 },
         });
         if (!res.ok) throw new Error('Error fetching products');
         return await res.json();
@@ -43,14 +43,14 @@ export type ParamsType = Promise<{ code: string }>;
 
 // Metadata generation function
 export async function generateMetadata({
-    params
+    params,
 }: { params: ParamsType }): Promise<Metadata> {
     const { code } = await params;
     const product = await getProductByCode(code);
 
     return {
         title: product ? product.name : 'Producto no encontrado',
-        description: product ? `Detalles de ${product.name}` : 'Página de producto no encontrada'
+        description: product ? `Detalles de ${product.name}` : 'Página de producto no encontrada',
     };
 }
 
@@ -58,12 +58,12 @@ export async function generateMetadata({
 export async function generateStaticParams(): Promise<{ code: string }[]> {
     const products = await getProducts();
     return products.map((product) => ({
-        code: product.code
+        code: product.code,
     }));
 }
 
 export default async function ProductPage({
-    params
+    params,
 }: { params: ParamsType }) {
     const { code } = await params;
     const product = await getProductByCode(code);
