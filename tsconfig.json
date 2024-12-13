@@ -1,27 +1,44 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
+    "target": "ES2017", // Nivel de ECMAScript compatible
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable"
+    ], // Ordenado con esnext primero
+    "allowJs": true, // Permitir incluir archivos JavaScript
+    "skipLibCheck": true, // Saltar la verificación de tipos en bibliotecas para acelerar el proceso
+    "strict": true, // Habilitar el modo estricto para TypeScript
+    "noEmit": true, // Evitar generar archivos .js
+    "esModuleInterop": true, // Habilitar interoperabilidad de módulos CommonJS y ES
+    "module": "esnext", // Usar el sistema de módulos ESNext
+    "moduleResolution": "bundler", // Resolución de módulos optimizada para bundlers
+    "resolveJsonModule": true, // Permitir la importación de archivos JSON
+    "isolatedModules": true, // Asegurarse de que cada archivo sea un módulo independiente
+    "jsx": "preserve", // Mantener JSX para que lo procese Next.js
+    "incremental": true, // Habilitar compilaciones incrementales para mejorar la velocidad
+    "strictNullChecks": true, // Habilitar la verificación estricta de valores nulos o indefinidos
+    "forceConsistentCasingInFileNames": true, // Enforce casing consistency
     "plugins": [
       {
-        "name": "next"
+        "name": "next" // Plugin específico para Next.js
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ] // Alias para importar desde el directorio src
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts", // Configuración de Next.js para TypeScript
+    "**/*.ts", // Incluir todos los archivos .ts
+    "**/*.tsx", // Incluir todos los archivos .tsx
+    ".next/types/**/*.ts" // Incluir los tipos generados por Next.js
+  ],
+  "exclude": [
+    "node_modules", // Excluir dependencias
+    "**/*.test.ts", // Excluir pruebas (opcional)
+    "**/*.spec.ts" // Excluir pruebas específicas (opcional)
+  ]
 }

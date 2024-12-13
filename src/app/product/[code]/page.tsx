@@ -35,11 +35,16 @@ async function getProductByCode(code: string): Promise<Product | null> {
     return products.find(product => product.code === code) || null;
 }
 
-// Componente de página para un producto específico
-const ProductPage = async ({ params }: { params: { code: string } }) => {
-    const { code } = params; // Eliminar `await` aquí
+type PageProps = {
+    params: {
+        code: string;
+    };
+};
 
+const ProductPage = async ({ params }: PageProps) => {
+    const { code } = params;
     const product = await getProductByCode(code);
+
     if (!product) {
         notFound(); // Si no se encuentra el producto, se retorna un 404
     }
