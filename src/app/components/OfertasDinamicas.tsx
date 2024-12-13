@@ -103,10 +103,10 @@ const OfertasDinamicas = () => {
     }
 
     return (
-        <section className="product-line lg:w-full md:w-full sm:w-1 lg:h-full sm:h-1 md:h-full flex flex-col items-center pb-8">
+        <section className="product-line overflow-x-hidden lg:w-full md:w-full sm:w-1 lg:h-full sm:h-1 md:h-full flex flex-col items-center pb-8">
             <h2 className="text-3xl font-bold text-white mb-4">{title}</h2>
 
-            <div className="grid lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-2 gap-4 w-full max-w-[800px] px-1 py-1 mx-2">
+            <div className="grid lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-2 gap-3 w-17 py-1 px-1">
                 {displayProducts.map((product) => (
                     <Link
                         key={product.code}
