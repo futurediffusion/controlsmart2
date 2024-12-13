@@ -1,11 +1,11 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Sidebar from '../../components/Sidebar';
 import InfiniteProductCarousel from '../../components/InfiniteProductCarousel';
 import QuantitySelector from '../../components/QuantitySelector';
-import Image from 'next/image';
-import { Metadata } from 'next';
 
 type Product = {
     code: string;
@@ -36,14 +36,17 @@ async function getProductByCode(code: string): Promise<Product | null> {
     return products.find(product => product.code === code) || null;
 }
 
-// Corrected type definition
+// Updated type definition for Next.js 15
 type PageProps = {
     params: {
         code: string;
-    };
+    }
 };
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+// Metadata generation function
+export async function generateMetadata({
+    params
+}: PageProps): Promise<Metadata> {
     const product = await getProductByCode(params.code);
 
     return {
@@ -52,12 +55,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
 }
 
-const ProductPage = async ({ params }: PageProps) => {
+export default async function ProductPage({ params }: PageProps) {
     const { code } = params;
     const product = await getProductByCode(code);
 
     if (!product) {
-        notFound(); // Si no se encuentra el producto, se retorna un 404
+        notFound();
     }
 
     return (
@@ -121,6 +124,4 @@ const ProductPage = async ({ params }: PageProps) => {
             <Footer />
         </main>
     );
-};
-
-export default ProductPage;
+}
