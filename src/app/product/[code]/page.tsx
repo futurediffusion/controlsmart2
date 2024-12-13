@@ -1,11 +1,10 @@
-// src/app/product/[code]/page.tsx
 import { notFound } from 'next/navigation';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Sidebar from '../../components/Sidebar';
 import InfiniteProductCarousel from '../../components/InfiniteProductCarousel';
 import QuantitySelector from '../../components/QuantitySelector';
-import Image from 'next/image'; // Importamos Image de Next.js
+import Image from 'next/image';
 
 type Product = {
     code: string;
@@ -36,9 +35,9 @@ async function getProductByCode(code: string): Promise<Product | null> {
     return products.find(product => product.code === code) || null;
 }
 
-// Este componente usa Server-side rendering directamente desde la función async dentro de la página
+// Componente de página para un producto específico
 const ProductPage = async ({ params }: { params: { code: string } }) => {
-    const { code } = await params;  // Añadir await aquí
+    const { code } = params; // No es necesario usar `await` aquí
 
     const product = await getProductByCode(code);
     if (!product) {
@@ -58,9 +57,9 @@ const ProductPage = async ({ params }: { params: { code: string } }) => {
                                 <Image
                                     src={product.image_url}
                                     alt={product.name}
-                                    layout="intrinsic" // Para mantener la relación de aspecto
-                                    width={500} // O el tamaño que desees
-                                    height={500} // O el tamaño que desees
+                                    layout="intrinsic"
+                                    width={500}
+                                    height={500}
                                     className="object-contain"
                                 />
                             </div>
