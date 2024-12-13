@@ -21,7 +21,9 @@ type Product = {
 // Función para obtener los productos desde el archivo JSON
 async function getProducts(): Promise<Product[]> {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/products.json`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/products.json`, {
+            next: { revalidate: 3600 }
+        });
         if (!res.ok) throw new Error('Error fetching products');
         return await res.json();
     } catch (error) {
@@ -36,18 +38,15 @@ async function getProductByCode(code: string): Promise<Product | null> {
     return products.find(product => product.code === code) || null;
 }
 
-// Updated type definition for Next.js 15
-type PageProps = {
-    params: {
-        code: string;
-    }
-};
+// Define params type as a Promise
+export type ParamsType = Promise<{ code: string }>;
 
 // Metadata generation function
 export async function generateMetadata({
     params
-}: PageProps): Promise<Metadata> {
-    const product = await getProductByCode(params.code);
+}: { params: ParamsType }): Promise<Metadata> {
+    const { code } = await params;
+    const product = await getProductByCode(code);
 
     return {
         title: product ? product.name : 'Producto no encontrado',
@@ -55,8 +54,18 @@ export async function generateMetadata({
     };
 }
 
-export default async function ProductPage({ params }: PageProps) {
-    const { code } = params;
+// Generate static params for dynamic routing
+export async function generateStaticParams(): Promise<{ code: string }[]> {
+    const products = await getProducts();
+    return products.map((product) => ({
+        code: product.code
+    }));
+}
+
+export default async function ProductPage({
+    params
+}: { params: ParamsType }) {
+    const { code } = await params;
     const product = await getProductByCode(code);
 
     if (!product) {
@@ -76,7 +85,6 @@ export default async function ProductPage({ params }: PageProps) {
                                 <Image
                                     src={product.image_url}
                                     alt={product.name}
-                                    layout="intrinsic"
                                     width={500}
                                     height={500}
                                     className="object-contain"
