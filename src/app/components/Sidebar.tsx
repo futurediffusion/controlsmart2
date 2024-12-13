@@ -18,8 +18,9 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ currentProductCode }) => {
-    const [products, setProducts] = useState < Product[] > ([]);
-    const [relatedProducts, setRelatedProducts] = useState < Product[] > ([]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [products, setProducts] = useState<Product[]>([]);
+    const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
     useEffect(() => {
         fetch('/products.json')

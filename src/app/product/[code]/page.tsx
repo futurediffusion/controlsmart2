@@ -1,5 +1,4 @@
 // src/app/product/[code]/page.tsx
-import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
