@@ -1,15 +1,17 @@
 import { Suspense } from 'react';
-import './globals.css'; // Ajustamos la ruta si es necesario.
+import { ReactNode } from 'react';
+import './globals.css';
 
 export const metadata = {
   title: 'Control Smart',
   description: 'Control Smart Peru',
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <title>{metadata.title}</title>
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
