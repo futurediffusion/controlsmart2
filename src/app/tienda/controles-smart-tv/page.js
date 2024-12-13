@@ -1,16 +1,17 @@
 'use client';  // Marca el archivo como cliente
 
-import { useRouter } from 'next/navigation'; // Importamos el router para enrutamiento dinámico
-import Header from '../../components/Header';  // Ruta correcta para Header
-import Footer from '../../components/Footer';  // Ruta correcta para Footer
-import Sidebar from '../../components/Sidebar';  // Ruta correcta para Sidebar
+import { useRouter, useSearchParams } from 'next/navigation'; // Importamos useSearchParams
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import Sidebar from '../../components/Sidebar';
 import Storesmart from '@/app/components/storesmart';
 
 export default function TiendaCategoryPage() {
-    const router = useRouter(); // Obtenemos el enrutador
+    const router = useRouter(); // Mantén este hook si lo necesitas para navegación
+    const searchParams = useSearchParams(); // Añade este hook para obtener parámetros de búsqueda
 
-    // Comprobamos si 'categoria' está disponible en router.query antes de acceder a él
-    const { categoria } = router.query || {};  // Destructuramos solo si router.query no es undefined
+    // Obtén la categoría desde los parámetros de búsqueda
+    const categoria = searchParams.get('categoria');
 
     // Verificamos que 'categoria' esté disponible
     const filterKey = 'category'; // Filtro por la propiedad 'category' de los productos
@@ -20,8 +21,8 @@ export default function TiendaCategoryPage() {
         <main>
             <Header />
             <div className="flex gap-4 p-4">
-                <Sidebar className="w-64" />  {/* Sidebar */}
-                <Storesmart filterKey={filterKey} filterValue={filterValue} className="flex-grow" /> {/* Store con filtro */}
+                <Sidebar className="w-64" />
+                <Storesmart filterKey={filterKey} filterValue={filterValue} className="flex-grow" />
             </div>
             <Footer />
         </main>
