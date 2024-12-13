@@ -13,14 +13,16 @@ interface Product {
     price: string;
 }
 
+// Añadido className en StoreProps
 interface StoreProps {
     filterKey?: string;
     filterValue?: string;
+    className?: string; // Añadido para pasar clases CSS al componente
 }
 
-const Store: React.FC<StoreProps> = ({ filterKey, filterValue }) => {
-    const [products, setProducts] = useState < Product[] > ([]);
-    const [currentPage, setCurrentPage] = useState < number > (1);
+const Store: React.FC<StoreProps> = ({ filterKey, filterValue, className }) => {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 16;
 
     useEffect(() => {
@@ -66,7 +68,7 @@ const Store: React.FC<StoreProps> = ({ filterKey, filterValue }) => {
     };
 
     return (
-        <section className="store w-full flex flex-col items-center">
+        <section className={`store w-full flex flex-col items-center ${className}`}>
             <div className="px-8 py-4 w-full max-w-[1200px]">
                 <h2 className="text-left text-xl font-bold tracking-wide uppercase mb-2">
                     Productos

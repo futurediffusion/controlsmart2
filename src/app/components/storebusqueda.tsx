@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link'; // Asegúrate de importar Link para poder usarlo
-import Image from 'next/image'; // Importamos next/image para optimizar las imágenes
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface Product {
     code: string;
@@ -16,8 +16,12 @@ interface Product {
     specifications?: string;
 }
 
-const Storebusqueda: React.FC = () => {
-    const [products, setProducts] = useState < Product[] > ([]);
+interface StorebusquedaProps {
+    className?: string; // Añadimos className en las props
+}
+
+const Storebusqueda: React.FC<StorebusquedaProps> = ({ className }) => {
+    const [products, setProducts] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 16;
     const [loading, setLoading] = useState(true);
@@ -77,7 +81,7 @@ const Storebusqueda: React.FC = () => {
 
     if (loading) {
         return (
-            <section className="store w-full flex flex-col items-center">
+            <section className={`store w-full flex flex-col items-center ${className}`}>
                 <div className="px-8 py-4 w-full max-w-[1200px]">
                     <h2 className="text-left text-xl font-bold tracking-wide uppercase mb-2">
                         Cargando productos...
@@ -89,7 +93,7 @@ const Storebusqueda: React.FC = () => {
     }
 
     return (
-        <section className="store w-full flex flex-col items-center">
+        <section className={`store w-full flex flex-col items-center ${className}`}>
             <div className="px-8 py-4 w-full max-w-[1200px]">
                 <h2 className="text-left text-xl font-bold tracking-wide uppercase mb-2">
                     Resultados de búsqueda para: &quot;{query}&quot;
@@ -110,7 +114,7 @@ const Storebusqueda: React.FC = () => {
                                     alt={product.name}
                                     className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
                                     layout="responsive"
-                                    width={300} // Asegúrate de proporcionar un tamaño adecuado
+                                    width={300}
                                     height={300}
                                 />
                             </div>
@@ -125,7 +129,6 @@ const Storebusqueda: React.FC = () => {
                                     {product.price}
                                 </p>
                             </div>
-                            {/* Aquí es donde se coloca el Link para entrar al producto */}
                             <Link
                                 href={`/product/${product.code}`}
                                 className="absolute inset-0"
@@ -138,7 +141,6 @@ const Storebusqueda: React.FC = () => {
                 )}
             </div>
 
-            {/* Paginación */}
             <div className="pagination flex items-center justify-end gap-2 mt-6">
                 <button
                     onClick={prevPage}

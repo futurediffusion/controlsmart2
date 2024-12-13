@@ -15,9 +15,10 @@ interface Product {
 interface StorefundasProps {
     filterKey?: keyof Product; // Restrict filterKey to keys of Product
     filterValue?: string;
+    className?: string; // Añadido para permitir clases CSS adicionales
 }
 
-const Storefundas: React.FC<StorefundasProps> = ({ filterKey, filterValue }) => {
+const Storefundas: React.FC<StorefundasProps> = ({ filterKey, filterValue, className }) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 16;
@@ -26,19 +27,19 @@ const Storefundas: React.FC<StorefundasProps> = ({ filterKey, filterValue }) => 
     useEffect(() => {
         setLoading(true);
 
-        // Fetch productos.json dynamically
+        // Fetch productos.json dinámicamente
         fetch('/products.json')
             .then((response) => response.json())
             .then((data: Product[]) => {
                 console.log('Productos cargados:', data);
 
-                // Filter products by brand 'CASE'
+                // Filtrar productos por marca 'CASE'
                 const filteredProducts = data.filter((product: Product) => product.brand === 'CASE');
 
-                // Apply additional filters if defined
+                // Aplicar filtros adicionales si están definidos
                 const finalProducts = filterKey && filterValue
                     ? filteredProducts.filter((product: Product) => {
-                        // Type-safe way to access product properties
+                        // Forma segura de acceder a las propiedades del producto
                         return product[filterKey] === filterValue;
                     })
                     : filteredProducts;
@@ -72,10 +73,10 @@ const Storefundas: React.FC<StorefundasProps> = ({ filterKey, filterValue }) => 
         }
     };
 
-    // Show loading if products are still loading
+    // Mostrar cargando si los productos aún están siendo cargados
     if (loading) {
         return (
-            <section className="store w-full flex flex-col items-center">
+            <section className={`store w-full flex flex-col items-center ${className}`}>
                 <div className="px-8 py-4 w-full max-w-[1200px]">
                     <h2 className="text-left text-xl font-bold tracking-wide uppercase mb-2">
                         Cargando productos...
@@ -87,7 +88,7 @@ const Storefundas: React.FC<StorefundasProps> = ({ filterKey, filterValue }) => 
     }
 
     return (
-        <section className="store w-full flex flex-col items-center">
+        <section className={`store w-full flex flex-col items-center ${className}`}>
             <div className="px-8 py-4 w-full max-w-[1200px]">
                 <h2 className="text-left text-xl font-bold tracking-wide uppercase mb-2">
                     Productos - Marca CASE
@@ -95,7 +96,7 @@ const Storefundas: React.FC<StorefundasProps> = ({ filterKey, filterValue }) => 
                 <hr className="border-t-2 border-gray-700 mb-4" />
             </div>
 
-            {/* Display products */}
+            {/* Mostrar productos */}
             <div className="grid grid-cols-4 gap-6 w-full max-w-[1200px] px-4">
                 {currentProducts.length > 0 ? (
                     currentProducts.map((product) => (
@@ -135,7 +136,7 @@ const Storefundas: React.FC<StorefundasProps> = ({ filterKey, filterValue }) => 
                 )}
             </div>
 
-            {/* Pagination */}
+            {/* Paginación */}
             <div className="pagination flex items-center justify-end gap-2 mt-6">
                 <button
                     onClick={prevPage}

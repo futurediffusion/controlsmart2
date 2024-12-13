@@ -16,9 +16,10 @@ interface Product {
 interface StorecelularProps {
     filterKey?: keyof Product; // Restrict filterKey to keys of Product
     filterValue?: string;
+    className?: string; // Added className to accept custom styles
 }
 
-const Storecelular: React.FC<StorecelularProps> = ({ filterKey, filterValue }) => {
+const Storecelular: React.FC<StorecelularProps> = ({ filterKey, filterValue, className }) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 16;
@@ -79,7 +80,7 @@ const Storecelular: React.FC<StorecelularProps> = ({ filterKey, filterValue }) =
 
     if (loading) {
         return (
-            <section className="store w-full flex flex-col items-center">
+            <section className={`store w-full flex flex-col items-center ${className}`}>
                 <div className="px-8 py-4 w-full max-w-[1200px]">
                     <h2 className="text-left text-xl font-bold tracking-wide uppercase mb-2">Cargando productos...</h2>
                     <hr className="border-t-2 border-gray-700 mb-4" />
@@ -89,7 +90,7 @@ const Storecelular: React.FC<StorecelularProps> = ({ filterKey, filterValue }) =
     }
 
     return (
-        <section className="store w-full flex flex-col items-center">
+        <section className={`store w-full flex flex-col items-center ${className}`}>
             <div className="px-8 py-4 w-full max-w-[1200px]">
                 <h2 className="text-left text-xl font-bold tracking-wide uppercase mb-2">Productos - Accesorios Celulares</h2>
                 <hr className="border-t-2 border-gray-700 mb-4" />
