@@ -11,11 +11,11 @@ const TiendaCategoryPage: React.FC = () => {
     const searchParams = useSearchParams(); // Añade este hook para obtener parámetros de búsqueda
 
     // Obtén la categoría desde los parámetros de búsqueda
-    const categoria = searchParams.get('categoria') as string | null;
+    const categoria = searchParams.get('categoria');
 
     // Formateamos la categoría para que el filtro sea válido
     const filterKey = 'category'; // Filtro basado en la propiedad 'category'
-    const filterValue = categoria ? categoria.replace('-', ' ') : null;
+    const filterValue = categoria ? categoria.replace('-', ' ') : undefined;
 
     return (
         <main>
