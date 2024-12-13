@@ -21,7 +21,8 @@ type Product = {
 // Función para obtener los productos desde el archivo JSON
 async function getProducts(): Promise<Product[]> {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/products.json`, {
+        // Cambiar la URL completa a la ruta relativa
+        const res = await fetch('/products.json', {
             next: { revalidate: 3600 },
         });
         if (!res.ok) throw new Error('Error fetching products');

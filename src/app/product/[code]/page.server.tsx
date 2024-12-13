@@ -10,10 +10,11 @@ type Product = {
     specifications: string;
 };
 
-// Lógica de servidor para obtener los productos desde un archivo JSON externo
+// Lógica de servidor para obtener los productos desde el archivo JSON externo
 async function getProducts(): Promise<Product[]> {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/products.json`);
+        // Cambiar la URL completa a la ruta relativa
+        const res = await fetch('/products.json');
         if (!res.ok) throw new Error('Error fetching products');
         return await res.json();
     } catch (error) {
@@ -21,6 +22,7 @@ async function getProducts(): Promise<Product[]> {
         return [];
     }
 }
+
 
 // Generar rutas estáticas
 export async function generateStaticParams() {
