@@ -35,7 +35,11 @@ async function getProducts(): Promise<Product[]> {
 // Función para obtener un producto específico por su código
 async function getProductByCode(code: string): Promise<Product | null> {
     const products = await getProducts();
-    return products.find(product => product.code === code) || null;
+
+    // Corregir el tipo de `p` como `Product`
+    const currentProduct = products.find((p: Product) => String(p.code) === code);
+
+    return currentProduct || null;
 }
 
 // Define params type as a Promise
