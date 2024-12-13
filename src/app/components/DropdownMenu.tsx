@@ -33,34 +33,32 @@ const DropdownMenu = () => {
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex items-center text-white space-x-4"
             >
-                {/* Animación de rotación solo para las líneas */}
                 <motion.span
                     className="relative block w-6 h-4"
-                    animate={{ rotate: isOpen ? 360 : 0 }} // Rotación de 360 grados cuando está abierto
-                    transition={{ duration: 0.5 }} // Duración de la animación
-                    whileHover={{ scale: 1.1 }} // Efecto de zoom al hacer hover
+                    animate={{ rotate: isOpen ? 360 : 0 }}
+                    transition={{ duration: 0.5 }}
+                    whileHover={{ scale: 1.1 }}
                 >
                     <span className="block w-full h-1 bg-white absolute top-0"></span>
                     <span className="block w-full h-1 bg-white absolute top-1/2 transform -translate-y-1/2"></span>
                     <span className="block w-full h-1 bg-white absolute bottom-0"></span>
                 </motion.span>
-                {/* Efecto de zoom al hacer hover sobre todo el botón */}
                 <motion.span
-                    whileHover={{ scale: 1.1 }} // Efecto de zoom sobre el texto "Menú"
-                    transition={{ duration: 0.3 }} // Duración de la animación
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.3 }}
                 >
                     Menú
                 </motion.span>
             </button>
 
             <div
-                className={`absolute top-full mt-2 bg-gray-800 text-white rounded-lg shadow-lg p-4 origin-top transition-all duration-950 ${isOpen
+                className={`absolute top-full mt-2 bg-gray-800 text-white rounded-lg shadow-lg p-4 origin-top transition-all duration-500 ${isOpen
                     ? 'scale-y-100 opacity-100'
                     : 'scale-y-0 opacity-0 pointer-events-none'
-                    }`}
+                    } sm:left-0 left-[-70px]`} // Ajusta el recuadro completo para móviles
                 style={{
-                    width: '200px', // Más ancho
-                    fontSize: '0.875rem', // Letras más pequeñas
+                    width: '200px',
+                    fontSize: '0.875rem',
                 }}
             >
                 <ul>
