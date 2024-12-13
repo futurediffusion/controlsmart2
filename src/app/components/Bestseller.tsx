@@ -3,9 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image'; // Importamos Image de next/image
+import Image from 'next/image';
 
-// Definir el tipo de producto
 interface Product {
     code: string;
     name: string;
@@ -16,16 +15,26 @@ interface Product {
 }
 
 const Bestseller: React.FC = () => {
-    const [products, setProducts] = useState<Product[]>([]);  // Estado para productos
-    const [currentIndex, setCurrentIndex] = useState<number>(0);  // Índice actual
-    const [prevIndex, setPrevIndex] = useState<number>(0);  // Índice previo
+    const [products, setProducts] = useState<Product[]>([]);
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [prevIndex, setPrevIndex] = useState<number>(0);
+    const [productsPerPage, setProductsPerPage] = useState<number>(4); // Productos visibles por página
 
-    // Cargar productos desde el archivo JSON
+    // Detectar el tamaño de la pantalla y ajustar el número de productos por página
+    useEffect(() => {
+        const handleResize = () => {
+            setProductsPerPage(window.innerWidth < 640 ? 2 : 4); // 2 productos en pantallas pequeñas
+        };
+        handleResize(); // Llamada inicial
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     useEffect(() => {
         fetch('/products.json')
             .then((response) => response.json())
             .then((data: Product[]) => {
-                const filteredProducts = data.filter(product => product.rating === "5");
+                const filteredProducts = data.filter((product) => product.rating === '5');
                 setProducts(filteredProducts);
             })
             .catch((error) => {
@@ -33,20 +42,25 @@ const Bestseller: React.FC = () => {
             });
     }, []);
 
-    // Función para ir a la siguiente diapositiva
     const nextSlide = () => {
         setPrevIndex(currentIndex);
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % Math.ceil(products.length / 4)); // Páginas de 4 productos
+        setCurrentIndex((prevIndex) =>
+            (prevIndex + 1) % Math.ceil(products.length / productsPerPage)
+        );
     };
 
-    // Función para ir a la diapositiva anterior
     const prevSlide = () => {
         setPrevIndex(currentIndex);
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + Math.ceil(products.length / 4)) % Math.ceil(products.length / 4));
+        setCurrentIndex((prevIndex) =>
+            (prevIndex - 1 + Math.ceil(products.length / productsPerPage)) %
+            Math.ceil(products.length / productsPerPage)
+        );
     };
 
-    // Seleccionar los productos actuales (4 por página)
-    const currentProducts = products.slice(currentIndex * 4, currentIndex * 4 + 4);
+    const currentProducts = products.slice(
+        currentIndex * productsPerPage,
+        currentIndex * productsPerPage + productsPerPage
+    );
 
     return (
         <section className="product-line w-full flex flex-col items-center">
@@ -71,7 +85,7 @@ const Bestseller: React.FC = () => {
                         initial={{ opacity: 0, x: prevIndex < currentIndex ? 100 : -100 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: prevIndex < currentIndex ? -100 : 100 }}
-                        transition={{ type: "tween" }}
+                        transition={{ type: 'tween' }}
                         className="flex justify-center space-x-4 w-full"
                     >
                         {currentProducts.map((product) => (
@@ -80,15 +94,14 @@ const Bestseller: React.FC = () => {
                                 className="w-48 h-[330px] p-4 rounded-lg shadow-lg group bg-white relative"
                             >
                                 <div className="product-image relative w-full h-48 overflow-hidden group-hover:scale-105 transition-transform duration-700">
-                                    {/* Usamos next/image en lugar de <img> */}
                                     <Image
                                         src={product.image_url}
                                         alt={product.name}
                                         className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
-                                        width={192}  // Ajusta el tamaño según tus necesidades
-                                        height={192} // Ajusta el tamaño según tus necesidades
-                                        priority={true} // Prioriza la carga de las imágenes visibles
-                                        quality={75} // Ajusta la calidad de la imagen para mejorar la carga
+                                        width={192}
+                                        height={192}
+                                        priority={true}
+                                        quality={75}
                                     />
                                     <button className="absolute bottom-2 right-2 bg-blue-500 rounded-full p-1 opacity-0 group-hover:opacity-100 group-hover:scale-110 hover:scale-125 transition-all duration-300 ease-in-out">
                                         <i className="fa-solid fa-cart-plus text-white text-sm"></i>
@@ -109,7 +122,6 @@ const Bestseller: React.FC = () => {
                                     </div>
                                 </div>
 
-                                {/* Ruta dinámica para cada producto */}
                                 <Link
                                     href={`/product/${product.code}`}
                                     className="absolute inset-0"

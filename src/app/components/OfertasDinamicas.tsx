@@ -56,7 +56,7 @@ const OfertasDinamicas = () => {
                 .sort((a, b) => a.sort - b.sort)
                 .map(({ value }) => value);
 
-            const selectedProducts = shuffledProducts.slice(0, 3);
+            const selectedProducts = shuffledProducts.slice(0, 4);
 
             const productsWithImages = selectedProducts.map((product) => {
                 const matchingImageName = imageNames.find(
@@ -106,7 +106,7 @@ const OfertasDinamicas = () => {
         <section className="product-line w-full flex flex-col items-center pb-8">
             <h2 className="text-3xl font-bold text-white mb-4">{title}</h2>
 
-            <div className="grid grid-cols-3 gap-4 w-full max-w-[800px] px-1 py-1 mx-2">
+            <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-4 w-full max-w-[800px] px-1 py-1 mx-2">
                 {displayProducts.map((product) => (
                     <Link
                         key={product.code}
