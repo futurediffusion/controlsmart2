@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 
 const DropdownMenu = () => {
-    const [isOpen, setIsOpen] = useState < boolean > (false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const router = useRouter();
-    const menuRef = useRef < HTMLDivElement > (null);
+    const menuRef = useRef<HTMLDivElement>(null);
 
     const navigateTo = (path: string): void => {
         router.push(path);
@@ -32,12 +33,24 @@ const DropdownMenu = () => {
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex items-center text-white space-x-4"
             >
-                <span className="relative block w-6 h-4">
+                {/* Animación de rotación solo para las líneas */}
+                <motion.span
+                    className="relative block w-6 h-4"
+                    animate={{ rotate: isOpen ? 360 : 0 }} // Rotación de 360 grados cuando está abierto
+                    transition={{ duration: 0.5 }} // Duración de la animación
+                    whileHover={{ scale: 1.1 }} // Efecto de zoom al hacer hover
+                >
                     <span className="block w-full h-1 bg-white absolute top-0"></span>
                     <span className="block w-full h-1 bg-white absolute top-1/2 transform -translate-y-1/2"></span>
                     <span className="block w-full h-1 bg-white absolute bottom-0"></span>
-                </span>
-                <span>Menú</span>
+                </motion.span>
+                {/* Efecto de zoom al hacer hover sobre todo el botón */}
+                <motion.span
+                    whileHover={{ scale: 1.1 }} // Efecto de zoom sobre el texto "Menú"
+                    transition={{ duration: 0.3 }} // Duración de la animación
+                >
+                    Menú
+                </motion.span>
             </button>
 
             <div
