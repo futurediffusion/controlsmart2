@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import Sidebar from '../../components/Sidebar';
+import Sidebar, { SidebarProps } from '../../components/Sidebar'; // Import SidebarProps
 import InfiniteProductCarousel from '../../components/InfiniteProductCarousel';
 import QuantitySelector from '../../components/QuantitySelector';
 
@@ -76,11 +76,18 @@ export default async function ProductPage({
         notFound();
     }
 
+    // Define Sidebar props explicitly
+    const sidebarProps: SidebarProps = {
+        currentProductCode: product.code,
+        brand: product.brand, // Add brand to the props
+    };
+
     return (
         <main className="flex flex-col min-h-screen">
             <Header />
             <div className="flex container mx-auto px-4 py-8 flex-grow">
-                <Sidebar currentProductCode={product.code} brand={product.brand} />
+                {/* Use the defined sidebarProps */}
+                <Sidebar {...sidebarProps} />
 
                 <div className="w-3/4 pl-8">
                     <div className="flex space-x-8">

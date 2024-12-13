@@ -13,11 +13,13 @@ interface Product {
     price: string;
 }
 
-interface SidebarProps {
+// Updated SidebarProps to include optional brand
+export interface SidebarProps {
     currentProductCode: string | number;
+    brand?: string; // Make brand optional
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ currentProductCode }) => {
+const Sidebar: React.FC<SidebarProps> = ({ currentProductCode, brand }) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
@@ -34,7 +36,9 @@ const Sidebar: React.FC<SidebarProps> = ({ currentProductCode }) => {
                 if (currentProduct) {
                     const sameBrandProducts = data
                         .filter((product: Product) =>
-                            String(product.brand).trim().toLowerCase() === String(currentProduct.brand).trim().toLowerCase() &&
+                            // Use the passed brand or the current product's brand
+                            String(product.brand).trim().toLowerCase() ===
+                            String(brand || currentProduct.brand).trim().toLowerCase() &&
                             String(product.code) !== productCode
                         )
                         .sort(() => Math.random() - 0.5)
@@ -49,7 +53,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentProductCode }) => {
             .catch((error) => {
                 console.error('Error fetching products:', error);
             });
-    }, [currentProductCode]);
+    }, [currentProductCode, brand]);
 
     return (
         <section className="product-line w-[400px] flex flex-col items-center p-0.1">
