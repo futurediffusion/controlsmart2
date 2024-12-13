@@ -5,6 +5,7 @@ import Sidebar from '../../components/Sidebar';
 import InfiniteProductCarousel from '../../components/InfiniteProductCarousel';
 import QuantitySelector from '../../components/QuantitySelector';
 import Image from 'next/image';
+import { Metadata } from 'next';
 
 type Product = {
     code: string;
@@ -35,11 +36,21 @@ async function getProductByCode(code: string): Promise<Product | null> {
     return products.find(product => product.code === code) || null;
 }
 
+// Corrected type definition
 type PageProps = {
     params: {
         code: string;
     };
 };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const product = await getProductByCode(params.code);
+
+    return {
+        title: product ? product.name : 'Producto no encontrado',
+        description: product ? `Detalles de ${product.name}` : 'Página de producto no encontrada'
+    };
+}
 
 const ProductPage = async ({ params }: PageProps) => {
     const { code } = params;
