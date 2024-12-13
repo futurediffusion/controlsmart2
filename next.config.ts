@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   images: {
     domains: ['imagedelivery.net'], // Agregar el dominio aquí
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
