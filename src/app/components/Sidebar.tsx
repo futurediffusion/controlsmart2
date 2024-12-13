@@ -17,16 +17,18 @@ interface Product {
 export interface SidebarProps {
     currentProductCode: string | number;
     brand?: string; // Make brand optional
+    className?: string; // Allow passing custom class names
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ currentProductCode, brand }) => {
+const Sidebar: React.FC<SidebarProps> = ({ currentProductCode, brand, className }) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
     useEffect(() => {
-        fetch('/products.json')
-            .then((response) => response.json())
-            .then((data: Product[]) => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch('/products.json');
+                const data: Product[] = await response.json();
                 setProducts(data);
 
                 const productCode = String(currentProductCode);
@@ -49,14 +51,16 @@ const Sidebar: React.FC<SidebarProps> = ({ currentProductCode, brand }) => {
                     const shuffledProducts = data.sort(() => Math.random() - 0.5).slice(0, 4);
                     setRelatedProducts(shuffledProducts);
                 }
-            })
-            .catch((error) => {
+            } catch (error) {
                 console.error('Error fetching products:', error);
-            });
+            }
+        };
+
+        fetchProducts();
     }, [currentProductCode, brand]);
 
     return (
-        <section className="product-line w-[400px] flex flex-col items-center p-0.1">
+        <section className={`product-line w-[400px] flex flex-col items-center p-0.1 ${className || ''}`}>
             <div className="px-2 py-1 w-full max-w-[500px]">
                 <h2 className="text-left text-md font-bold tracking-wide uppercase mb-1">
                     También Para Ti
@@ -70,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentProductCode, brand }) => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ type: "tween" }}
+                        transition={{ type: 'tween' }}
                         className="flex flex-col space-y-3 w-full"
                     >
                         {relatedProducts.length > 0 ? (
