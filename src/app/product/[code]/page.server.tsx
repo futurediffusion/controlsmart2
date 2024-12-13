@@ -14,7 +14,7 @@ type Product = {
 async function getProducts(): Promise<Product[]> {
     try {
         // Cambiar la URL completa a la ruta relativa
-        const res = await fetch('/products.json');
+        const res = await fetch('https://controlsmart2-tram.vercel.app//products.json');
         if (!res.ok) throw new Error('Error fetching products');
         return await res.json();
     } catch (error) {
