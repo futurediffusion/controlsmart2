@@ -2,45 +2,67 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
-import Image from 'next/image'; // Import next/image
+import Image from 'next/image';
 
-const Storesmart = ({ filterKey, filterValue }) => {
-    const [products, setProducts] = useState([]);
+// Interfaz para definir la estructura de un producto
+interface Product {
+    code: string;
+    brand: string;
+    name: string;
+    price: string;
+    image_url: string;
+    category: string;
+}
+
+// Interfaz para las props del componente
+interface StoresmartProps {
+    filterKey?: keyof Product;
+    filterValue?: string;
+}
+
+const Storesmart: React.FC<StoresmartProps> = ({ filterKey, filterValue }) => {
+    const [products, setProducts] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 16;
-    const [loading, setLoading] = useState(true); // Estado de carga
+    const [loading, setLoading] = useState(true);
 
-    // Fetch data only when filterKey or filterValue changes
+    // Obtener datos solo cuando cambian filterKey o filterValue
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setLoading(true); // Inicia la carga de productos
+                setLoading(true);
                 const response = await fetch('/products.json');
-                const data = await response.json();
+                const data: Product[] = await response.json();
                 console.log('Productos cargados:', data);
 
                 // Filtrar productos por categoría 'Accesorios TV'
-                const filteredProducts = data.filter((product) => product.category === 'Accesorios TV');
+                const filteredProducts = data.filter((product: Product) =>
+                    product.category === 'Accesorios TV'
+                );
 
                 // Aplicar filtros adicionales si están definidos
                 const finalProducts = filterKey && filterValue
-                    ? filteredProducts.filter((product) => product[filterKey] === filterValue)
+                    ? filteredProducts.filter((product: Product) => {
+                        // Acceso seguro a propiedades del producto
+                        return product[filterKey] === filterValue;
+                    })
                     : filteredProducts;
 
                 setProducts(finalProducts);
             } catch (error) {
-                console.error('Error fetching products:', error);
+                console.error('Error al obtener productos:', error);
             } finally {
-                setLoading(false); // Productos cargados o error, actualizar estado
+                setLoading(false);
             }
         };
 
         fetchData();
     }, [filterKey, filterValue]);
 
-    // Calculamos la cantidad de páginas
+    // Calcular la cantidad de páginas
     const totalPages = useMemo(() => Math.ceil(products.length / itemsPerPage), [products]);
 
+    // Obtener productos de la página actual
     const currentProducts = useMemo(
         () => products.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage),
         [products, currentPage]
@@ -60,7 +82,7 @@ const Storesmart = ({ filterKey, filterValue }) => {
         }
     };
 
-    // Mostrar loading si los productos aún se están cargando
+    // Mostrar pantalla de carga
     if (loading) {
         return (
             <section className="store w-full flex flex-col items-center">
@@ -95,10 +117,10 @@ const Storesmart = ({ filterKey, filterValue }) => {
                                 <Image
                                     src={product.image_url}
                                     alt={product.name}
-                                    width={300} // Adjust the width and height as needed
+                                    width={300}
                                     height={300}
                                     className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
-                                    priority // You can also add priority for above-the-fold images
+                                    priority
                                 />
                             </div>
                             <div className="product-info mt-4">

@@ -13,7 +13,7 @@ interface Product {
 }
 
 interface StorefundasProps {
-    filterKey?: string;
+    filterKey?: keyof Product; // Restrict filterKey to keys of Product
     filterValue?: string;
 }
 
@@ -21,33 +21,36 @@ const Storefundas: React.FC<StorefundasProps> = ({ filterKey, filterValue }) => 
     const [products, setProducts] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 16;
-    const [loading, setLoading] = useState<boolean>(true); // Estado de carga
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        setLoading(true); // Inicia la carga de productos
+        setLoading(true);
 
-        // Fetch productos.json dinámicamente
+        // Fetch productos.json dynamically
         fetch('/products.json')
             .then((response) => response.json())
-            .then((data) => {
+            .then((data: Product[]) => {
                 console.log('Productos cargados:', data);
 
-                // Filtrar productos por marca 'CASE'
+                // Filter products by brand 'CASE'
                 const filteredProducts = data.filter((product: Product) => product.brand === 'CASE');
 
-                // Aplicar filtros adicionales si están definidos
+                // Apply additional filters if defined
                 const finalProducts = filterKey && filterValue
-                    ? filteredProducts.filter((product) => product[filterKey as keyof Product] === filterValue)
+                    ? filteredProducts.filter((product: Product) => {
+                        // Type-safe way to access product properties
+                        return product[filterKey] === filterValue;
+                    })
                     : filteredProducts;
 
                 setProducts(finalProducts);
-                setLoading(false); // Productos cargados, actualizar estado
+                setLoading(false);
             })
             .catch((error) => {
                 console.error('Error fetching products:', error);
-                setLoading(false); // En caso de error, también dejamos de mostrar "Cargando..."
+                setLoading(false);
             });
-    }, [filterKey, filterValue]); // Re-cargar cuando cambia el filtro
+    }, [filterKey, filterValue]);
 
     const totalPages = Math.ceil(products.length / itemsPerPage);
     const currentProducts = products.slice(
@@ -69,7 +72,7 @@ const Storefundas: React.FC<StorefundasProps> = ({ filterKey, filterValue }) => 
         }
     };
 
-    // Mostrar loading si los productos aún se están cargando
+    // Show loading if products are still loading
     if (loading) {
         return (
             <section className="store w-full flex flex-col items-center">
@@ -92,7 +95,7 @@ const Storefundas: React.FC<StorefundasProps> = ({ filterKey, filterValue }) => 
                 <hr className="border-t-2 border-gray-700 mb-4" />
             </div>
 
-            {/* Mostrar productos */}
+            {/* Display products */}
             <div className="grid grid-cols-4 gap-6 w-full max-w-[1200px] px-4">
                 {currentProducts.length > 0 ? (
                     currentProducts.map((product) => (
@@ -132,7 +135,7 @@ const Storefundas: React.FC<StorefundasProps> = ({ filterKey, filterValue }) => 
                 )}
             </div>
 
-            {/* Paginación */}
+            {/* Pagination */}
             <div className="pagination flex items-center justify-end gap-2 mt-6">
                 <button
                     onClick={prevPage}
