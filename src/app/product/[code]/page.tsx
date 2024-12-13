@@ -37,7 +37,7 @@ async function getProductByCode(code: string): Promise<Product | null> {
 
 // Componente de página para un producto específico
 const ProductPage = async ({ params }: { params: { code: string } }) => {
-    const { code } = params; // No es necesario usar `await` aquí
+    const { code } = params; // Eliminar `await` aquí
 
     const product = await getProductByCode(code);
     if (!product) {
