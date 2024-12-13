@@ -5,12 +5,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import DropdownMenu from './DropdownMenu';
+import Image from 'next/image'; // Importamos el componente Image de Next.js
 
 const Header = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const router = useRouter();
 
-    const handleSearchSubmit = (e) => {
+    const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchTerm.trim()) {
             router.push(`/tienda/busqueda?query=${searchTerm}`);
@@ -22,10 +23,13 @@ const Header = () => {
             {/* Logo */}
             <div className="mr-6">
                 <Link href="/">
-                    <img
+                    <Image
                         src="/controlsmart.avif"
                         alt="ControlSmart Logo"
                         className="h-7 cursor-pointer"
+                        width={50}  // Establecemos un ancho fijo para optimizar el rendimiento
+                        height={28}  // Establecemos una altura proporcional
+                        priority  // Prioriza la carga de la imagen, ya que es importante para el logo
                     />
                 </Link>
             </div>

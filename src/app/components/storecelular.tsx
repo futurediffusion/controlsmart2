@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Product {
     code: string;
@@ -97,10 +98,13 @@ const Storecelular: React.FC<StorecelularProps> = ({ filterKey, filterValue }) =
                     currentProducts.map((product) => (
                         <div key={product.code} className="w-full h-[330px] p-4 rounded-lg shadow-lg group bg-white relative">
                             <div className="product-image relative w-full h-48 overflow-hidden group-hover:scale-105 transition-transform duration-700">
-                                <img
+                                <Image
                                     src={product.image_url}
                                     alt={product.name}
+                                    width={500} // Specify the width of the image
+                                    height={500} // Specify the height of the image
                                     className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
+                                    layout="intrinsic" // Maintain aspect ratio
                                 />
                             </div>
                             <div className="product-info mt-4">

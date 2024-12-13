@@ -6,6 +6,7 @@ import Footer from '../../components/Footer';
 import Sidebar from '../../components/Sidebar';
 import InfiniteProductCarousel from '../../components/InfiniteProductCarousel';
 import QuantitySelector from '../../components/QuantitySelector';
+import Image from 'next/image'; // Importamos Image de Next.js
 
 type Product = {
     code: string;
@@ -54,11 +55,16 @@ const ProductPage = async ({ params }: { params: { code: string } }) => {
                 <div className="w-3/4 pl-8">
                     <div className="flex space-x-8">
                         <div className="w-1/2 flex items-center justify-center">
-                            <img
-                                src={product.image_url}
-                                alt={product.name}
-                                className="max-w-full max-h-[500px] object-contain"
-                            />
+                            <div className="relative max-w-full max-h-[500px]">
+                                <Image
+                                    src={product.image_url}
+                                    alt={product.name}
+                                    layout="intrinsic" // Para mantener la relación de aspecto
+                                    width={500} // O el tamaño que desees
+                                    height={500} // O el tamaño que desees
+                                    className="object-contain"
+                                />
+                            </div>
                         </div>
 
                         <div className="w-1/2 flex flex-col">

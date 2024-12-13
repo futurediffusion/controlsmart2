@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image'; // Import next/image
 
 const Storesmart = ({ filterKey, filterValue }) => {
     const [products, setProducts] = useState([]);
@@ -91,10 +92,13 @@ const Storesmart = ({ filterKey, filterValue }) => {
                             className="w-full h-[330px] p-4 rounded-lg shadow-lg group bg-white relative"
                         >
                             <div className="product-image relative w-full h-48 overflow-hidden group-hover:scale-105 transition-transform duration-700">
-                                <img
+                                <Image
                                     src={product.image_url}
                                     alt={product.name}
+                                    width={300} // Adjust the width and height as needed
+                                    height={300}
                                     className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
+                                    priority // You can also add priority for above-the-fold images
                                 />
                             </div>
                             <div className="product-info mt-4">

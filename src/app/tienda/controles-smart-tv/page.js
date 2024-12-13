@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'; // Importamos el router para enrutamiento dinámico
 import Header from '../../components/Header';  // Ruta correcta para Header
 import Footer from '../../components/Footer';  // Ruta correcta para Footer
-import Store from '../../components/storesmart';  // Ruta correcta para Store
 import Sidebar from '../../components/Sidebar';  // Ruta correcta para Sidebar
 import Storesmart from '@/app/components/storesmart';
 
