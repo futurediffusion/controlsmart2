@@ -13,10 +13,10 @@ interface Product {
     price: string;
 }
 
-// Updated SidebarProps to include optional brand
+// Updated SidebarProps to include optional currentProductCode
 export interface SidebarProps {
-    currentProductCode: string | number;
-    brand?: string; // Make brand optional
+    currentProductCode?: string | number; // Made optional
+    brand?: string; // Optional brand
     className?: string; // Allow passing custom class names
 }
 
@@ -31,14 +31,19 @@ const Sidebar: React.FC<SidebarProps> = ({ currentProductCode, brand, className 
                 const data: Product[] = await response.json();
                 setProducts(data);
 
-                const productCode = String(currentProductCode);
+                if (!currentProductCode) {
+                    // If no currentProductCode, show random products
+                    const shuffledProducts = data.sort(() => Math.random() - 0.5).slice(0, 4);
+                    setRelatedProducts(shuffledProducts);
+                    return;
+                }
 
+                const productCode = String(currentProductCode);
                 const currentProduct = data.find((p: Product) => String(p.code) === productCode);
 
                 if (currentProduct) {
                     const sameBrandProducts = data
                         .filter((product: Product) =>
-                            // Use the passed brand or the current product's brand
                             String(product.brand).trim().toLowerCase() ===
                             String(brand || currentProduct.brand).trim().toLowerCase() &&
                             String(product.code) !== productCode
