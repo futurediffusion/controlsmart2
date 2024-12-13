@@ -18,38 +18,30 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ currentProductCode }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [products, setProducts] = useState<Product[]>([]);
     const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
     useEffect(() => {
         fetch('/products.json')
             .then((response) => response.json())
-            .then((data) => {
+            .then((data: Product[]) => {
                 setProducts(data);
 
-                // Convertir currentProductCode a string para comparación
                 const productCode = String(currentProductCode);
 
-                // Encontrar el producto actual
-                const currentProduct = data.find(p => String(p.code) === productCode);
+                const currentProduct = data.find((p: Product) => String(p.code) === productCode);
 
                 if (currentProduct) {
-                    // Filtrar productos de la misma marca
                     const sameBrandProducts = data
-                        .filter(product =>
+                        .filter((product: Product) =>
                             String(product.brand).trim().toLowerCase() === String(currentProduct.brand).trim().toLowerCase() &&
                             String(product.code) !== productCode
                         )
                         .sort(() => Math.random() - 0.5)
                         .slice(0, 4);
 
-                    console.log('Producto Actual:', currentProduct);
-                    console.log('Productos de la Misma Marca:', sameBrandProducts);
-
                     setRelatedProducts(sameBrandProducts);
                 } else {
-                    // Si no hay producto actual, mostrar productos aleatorios
                     const shuffledProducts = data.sort(() => Math.random() - 0.5).slice(0, 4);
                     setRelatedProducts(shuffledProducts);
                 }
@@ -87,10 +79,10 @@ const Sidebar: React.FC<SidebarProps> = ({ currentProductCode }) => {
                                         <Image
                                             src={product.image_url}
                                             alt={product.name}
-                                            width={100} // Ancho optimizado para la imagen
-                                            height={100} // Alto optimizado para la imagen
+                                            width={100}
+                                            height={100}
                                             className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
-                                            priority // Hace que la imagen se cargue de inmediato
+                                            priority
                                         />
                                     </div>
 
