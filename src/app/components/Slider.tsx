@@ -46,7 +46,7 @@ const Slider: React.FC = () => {
 
     return (
         <section className="banner relative w-full h-full overflow-hidden bg-[#444]">
-            <div className="slider flex flex-col items-center justify-center h-full sm:h-[75vh]">
+            <div className="slider relative flex flex-col items-center justify-center h-full sm:h-[75vh]">
                 <div className="slides absolute w-full h-full flex items-center justify-center">
                     <AnimatePresence>
                         {slides.map((src, index) => (
@@ -97,22 +97,22 @@ const Slider: React.FC = () => {
                         <i className="fa-solid fa-chevron-left text-blue-500 text-lg"></i>
                     </button>
 
-                    <div className="dots flex gap-2 justify-center">
-                        {slides.map((_, index) => (
-                            <span
-                                key={index}
-                                className={`dot w-2.5 h-2.5 rounded-full cursor-pointer transition-colors duration-300 hover:scale-110 ${index === currentIndex ? 'bg-blue-500' : 'bg-white bg-opacity-70'}`}
-                                onClick={() => setCurrentIndex(index)}
-                            ></span>
-                        ))}
-                    </div>
-
                     <button
                         onClick={nextSlide}
                         className="p-2 rounded-md bg-white bg-opacity-60 hover:bg-opacity-80 hover:scale-110 focus:outline-none transition duration-300"
                     >
                         <i className="fa-solid fa-chevron-right text-blue-500 text-lg"></i>
                     </button>
+                </div>
+
+                <div className="dots flex gap-2 justify-center mt-4">
+                    {slides.map((_, index) => (
+                        <span
+                            key={index}
+                            className={`dot w-2.5 h-2.5 rounded-full cursor-pointer transition-colors duration-300 hover:scale-110 ${index === currentIndex ? 'bg-blue-500' : 'bg-white bg-opacity-70'}`}
+                            onClick={() => setCurrentIndex(index)}
+                        ></span>
+                    ))}
                 </div>
             </div>
         </section>
