@@ -46,7 +46,7 @@ const Slider: React.FC = () => {
 
     return (
         <section className="banner relative w-full h-full overflow-hidden bg-[#444]">
-            <div className="slider relative flex flex-col items-center justify-center h-full sm:h-[75vh]">
+            <div className="slider relative flex flex-col items-center justify-center h-full sm:h-[72vh]">
                 <div className="slides absolute w-full h-full flex items-center justify-center">
                     <AnimatePresence>
                         {slides.map((src, index) => (
